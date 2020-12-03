@@ -3,8 +3,11 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 enum { WIDTH = 800, HEIGHT = 800 };
+
+const int FASZOM = 10;
 
 typedef struct Vec3 {
     float x, y, z;
@@ -135,7 +138,7 @@ void screenToMatrix(SDL_Window *window, Matrix *mat)
 {
     SDL_Surface *bmp = SDL_GetWindowSurface(window);
     for (int y = 0; y < HEIGHT; y++) {
-        Uint32 *row = (Uint32*) ((char*) bmp->pixels + y*bmp->pitch);
+        Uint32 *row = (Uint32 *) ((char*) bmp->pixels + y*bmp->pitch);
         for (int x = 0; x < WIDTH; x++) {
             mat[0][y][x] = (row[x] >> bmp->format->Rshift) & 0xFF << bmp->format->Rloss;
             mat[1][y][x] = (row[x] >> bmp->format->Gshift) & 0xFF << bmp->format->Gloss;
@@ -150,12 +153,12 @@ void matrixToScreen(SDL_Renderer *renderer, Matrix *mat)
     for (int y = 0; y < HEIGHT; y++) {
         Uint32 *row = (Uint32 *) ((char *) bmp->pixels + y * bmp->pitch);
         for (int x = 0; x < WIDTH; x++) {
-            Uint32 szam;
+            Uint32 num;
 
-            szam = (mat[0][y][x] >> bmp->format->Rloss << bmp->format->Rshift)
+            num = (mat[0][y][x] >> bmp->format->Rloss << bmp->format->Rshift)
                  | (mat[1][y][x] >> bmp->format->Gloss << bmp->format->Gshift)
                  | (mat[2][y][x] >> bmp->format->Bloss << bmp->format->Bshift);
-            row[x] = szam;
+            row[x] = num;
         }
     }
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, bmp);
@@ -207,35 +210,68 @@ void sdl_init(char const *title, SDL_Window **pwindow, SDL_Renderer **prenderer)
     *prenderer = renderer;
 }
 
+Uint32 timer(Uint32 ms, void *args) {
+    SDL_Event ev;
+    ev.type = SDL_USEREVENT;
+    SDL_PushEvent(&ev);
+    return ms;
+}
 
 int main(int argc, char *argv[]) {
     SDL_Window *window;
     SDL_Renderer *renderer;
     sdl_init("Christmas Time", &window, &renderer);
 
+    SDL_TimerID id = SDL_AddTimer(20, timer, NULL);
+
     // TESTING
 
-    Poly poly[2];
+    Poly poly[3];
     loadPoly(&poly[0], "cube.txt");
     loadPoly(&poly[1], "cube.txt");
+    loadPoly(&poly[2], "cube.txt");
+
     rotatePoly(&poly[0], 0.0f, 3.14f/4.0f, 0.0f);
     transformPoly(&poly[0], -110.0f, 0.0f, -110.0f);
+    projectPoly(&poly[0], 800.0f);
+
     rotatePoly(&poly[1], 0.0f, 3.14f/4.0f, 0.0f);
     transformPoly(&poly[1], 110.0f, 0.0f, 110.0f);
-    projectPoly(&poly[0], 800.0f);
     projectPoly(&poly[1], 800.0f);
-    drawPoly(renderer, &poly[1]);
+
+    rotatePoly(&poly[2], 0.0f, 3.14f/4.0f, 0.0f);
+    transformPoly(&poly[2], 0.0f, 0.0f, 110.0f);
+    projectPoly(&poly[2], 800.0f);
+
+    drawPoly(renderer, &poly[2]);
+    SDL_RenderPresent(renderer);
     blurScreen(window, renderer);
+
+    drawPoly(renderer, &poly[1]);
+    SDL_RenderPresent(renderer);
+    blurScreen(window, renderer);
+
     drawPoly(renderer, &poly[0]);
+
+    SDL_RenderPresent(renderer);
     //zOrder(2, poly);
     //drawPolys(renderer, 2, poly);
 
+    bool quit = false;
+    while (!quit) {
+        SDL_Event event;
+        SDL_WaitEvent(&event);
 
-    SDL_RenderPresent(renderer);
-
-    SDL_Event ev;
-    while (SDL_WaitEvent(&ev) && ev.type != SDL_QUIT) {
+        switch (event.type) {
+            case SDL_USEREVENT:
+                break;
+            case SDL_QUIT:
+                quit = true;
+                break;
+        }
     }
+
+    SDL_RemoveTimer(id);
 
     SDL_Quit();
 
