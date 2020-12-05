@@ -7,8 +7,6 @@
 
 enum { WIDTH = 800, HEIGHT = 800 };
 
-const int FASZOM = 10;
-
 typedef struct Vec3 {
     float x, y, z;
 } Vec3;
@@ -69,6 +67,15 @@ void transformPoly(Poly *poly, float dx, float dy, float dz)
         p->x += dx;
         p->y += dy;
         p->z += dz;
+    }
+}
+
+void scalePoly(Poly *poly, float mx, float my, float mz)
+{
+    for (Ver3f *p = poly->vertices; p < poly->vertices + poly->vertexCount; p++) {
+        p->x *= mx;
+        p->y *= my;
+        p->z *= mz;
     }
 }
 
@@ -227,20 +234,23 @@ int main(int argc, char *argv[]) {
     // TESTING
 
     Poly poly[3];
-    loadPoly(&poly[0], "cube.txt");
-    loadPoly(&poly[1], "cube.txt");
-    loadPoly(&poly[2], "cube.txt");
+    loadPoly(&poly[0], "tree.txt");
+    loadPoly(&poly[1], "tree.txt");
+    loadPoly(&poly[2], "tree.txt");
 
+    scalePoly(&poly[0], 100.0f, 100.0f, 100.0f);
     rotatePoly(&poly[0], 0.0f, 3.14f/4.0f, 0.0f);
     transformPoly(&poly[0], -110.0f, 0.0f, -110.0f);
     projectPoly(&poly[0], 800.0f);
 
+    scalePoly(&poly[1], 100.0f, 100.0f, 100.0f);
     rotatePoly(&poly[1], 0.0f, 3.14f/4.0f, 0.0f);
-    transformPoly(&poly[1], 110.0f, 0.0f, 110.0f);
+    transformPoly(&poly[1], 0.0f, 0.0f, 0.0f);
     projectPoly(&poly[1], 800.0f);
 
+    scalePoly(&poly[2], 100.0f, 100.0f, 100.0f);
     rotatePoly(&poly[2], 0.0f, 3.14f/4.0f, 0.0f);
-    transformPoly(&poly[2], 0.0f, 0.0f, 110.0f);
+    transformPoly(&poly[2], 110.0f, 0.0f, 110.0f);
     projectPoly(&poly[2], 800.0f);
 
     drawPoly(renderer, &poly[2]);
