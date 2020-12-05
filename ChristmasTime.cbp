@@ -46,7 +46,16 @@
 			<Add library="dxguid" />
 			<Add directory="$(#sdl2.lib)" />
 		</Linker>
+		<Unit filename="basic3d.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="basic3d.h" />
+		<Unit filename="common.h" />
 		<Unit filename="cube.txt" />
+		<Unit filename="imgeffect.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="imgeffect.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
