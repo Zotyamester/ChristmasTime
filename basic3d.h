@@ -9,6 +9,7 @@ typedef struct Vec3 {
 
 typedef struct Ver3f {
     float x, y, z;
+    float dx, dy, dz;
     int px, py;
 } Ver3f;
 

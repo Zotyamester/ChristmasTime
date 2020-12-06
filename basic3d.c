@@ -35,39 +35,43 @@ void unloadPoly(Poly *poly)
 
 void transformPoly(Poly *poly, float dx, float dy, float dz)
 {
-    for (Ver3f *p = poly->vertices; p < poly->vertices + poly->vertexCount; p++) {
-        p->x += dx;
-        p->y += dy;
-        p->z += dz;
+    for (Ver3f *v = poly->vertices; v < poly->vertices + poly->vertexCount; v++) {
+        v->x += dx;
+        v->y += dy;
+        v->z += dz;
+        v->dx += dx;
+        v->dy += dy;
+        v->dz += dz;
     }
 }
 
 void scalePoly(Poly *poly, float mx, float my, float mz)
 {
-    for (Ver3f *p = poly->vertices; p < poly->vertices + poly->vertexCount; p++) {
-        p->x *= mx;
-        p->y *= my;
-        p->z *= mz;
+    for (Ver3f *v = poly->vertices; v < poly->vertices + poly->vertexCount; v++) {
+        v->x *= mx;
+        v->y *= my;
+        v->z *= mz;
     }
 }
 
 void rotatePoly(Poly *poly, float xa, float ya, float za)
 {
-    for (Ver3f *p = poly->vertices; p < poly->vertices + poly->vertexCount; p++) {
-        Vec3 rx = {p->x, p->z * sin(xa) + p->y * cos(xa), p->z * cos(xa) - p->y * sin(xa)};
+    for (Ver3f *v = poly->vertices; v < poly->vertices + poly->vertexCount; v++) {
+        float ox = v->x - v->dx, oy = v->y - v->dy, oz = v->z - v->dz;
+        Vec3 rx = {ox, oz * sin(xa) + oy * cos(xa), oz * cos(xa) - oy * sin(xa)};
         Vec3 ry = {rx.x * cos(ya) - rx.z * sin(ya), rx.y, rx.x * sin(ya) + rx.z * cos(ya)};
         Vec3 rz = {ry.x * cos(za) - ry.y * sin(za), ry.x * sin(za) + ry.y * cos(za), ry.z};
-        p->x = rz.x;
-        p->y = rz.y;
-        p->z = rz.z;
+        v->x = rz.x + v->dx;
+        v->y = rz.y + v->dy;
+        v->z = rz.z + v->dz;
     }
 }
 
 void projectPoly(Poly *poly, float viewport)
 {
-    for (Ver3f *p = poly->vertices; p < poly->vertices + poly->vertexCount; p++) {
-        p->px = +viewport * p->x / (p->z + viewport) + WIDTH / 2;
-        p->py = -viewport * p->y / (p->z + viewport) + HEIGHT / 2;
+    for (Ver3f *v = poly->vertices; v < poly->vertices + poly->vertexCount; v++) {
+        v->px = +viewport * v->x / (v->z + viewport) + WIDTH / 2;
+        v->py = -viewport * v->y / (v->z + viewport) + HEIGHT / 2;
     }
 }
 
@@ -106,7 +110,7 @@ void drawPoly(SDL_Renderer *renderer, Poly *poly)
 
 void drawPolys(SDL_Renderer *renderer, int polyCount, Poly *polys)
 {
-    for (Poly *p = polys; p < polys + polyCount; p++) {
-        drawPoly(renderer, p);
+    for (Poly *poly = polys; poly < polys + polyCount; poly++) {
+        drawPoly(renderer, poly);
     }
 }

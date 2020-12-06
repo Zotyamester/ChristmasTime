@@ -1,8 +1,7 @@
 #include "imgeffect.h"
 
-void screenToMatrix(SDL_Window *window, Matrix *mat)
+void screenToMatrix(SDL_Surface *bmp, Matrix *mat)
 {
-    SDL_Surface *bmp = SDL_GetWindowSurface(window);
     for (int y = 0; y < HEIGHT; y++) {
         Uint32 *row = (Uint32 *) ((char*) bmp->pixels + y*bmp->pitch);
         for (int x = 0; x < WIDTH; x++) {
@@ -33,12 +32,12 @@ void matrixToScreen(SDL_Renderer *renderer, Matrix *mat)
     SDL_DestroyTexture(texture);
 }
 
-void blurScreen(SDL_Window *window, SDL_Renderer *renderer)
+void blurScreen(SDL_Surface *bmp, SDL_Renderer *renderer)
 {
     Matrix *src = malloc(3 * sizeof(Matrix));
     Matrix *dst = malloc(3 * sizeof(Matrix));
-    screenToMatrix(window, src);
-    screenToMatrix(window, dst);
+    screenToMatrix(bmp, src);
+    screenToMatrix(bmp, dst);
     for (int c = 0; c < 3; c++) {
         for (int y = 1; y < HEIGHT - 1; y++) {
             for (int x = 1; x < WIDTH - 1; x++) {

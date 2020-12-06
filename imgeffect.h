@@ -5,8 +5,8 @@
 
 typedef unsigned char Matrix[HEIGHT][WIDTH];
 
-void screenToMatrix(SDL_Window *window, Matrix *mat);
+void screenToMatrix(SDL_Surface *bmp, Matrix *mat);
 void matrixToScreen(SDL_Renderer *renderer, Matrix *mat);
-void blurScreen(SDL_Window *window, SDL_Renderer *renderer);
+void blurScreen(SDL_Surface *bmp, SDL_Renderer *renderer);
 
 #endif // IMGEFFECT_H
