@@ -52,29 +52,29 @@ int main(int argc, char *argv[]) {
     scalePoly(&poly[0], 100.0f, 100.0f, 100.0f);
     rotatePoly(&poly[0], 0.0f, 3.14f/4.0f, 0.0f);
     transformPoly(&poly[0], -200.0f, 0.0f, -300.0f);
-    projectPoly(&poly[0], 800.0f);
+    projectPoly(&poly[0]);
     scalePoly(&poly[1], 100.0f, 100.0f, 100.0f);
     rotatePoly(&poly[1], 0.0f, 3.14f/4.0f, 0.0f);
     transformPoly(&poly[1], 200.0f, 0.0f, -300.0f);
-    projectPoly(&poly[1], 800.0f);
+    projectPoly(&poly[1]);
 
     scalePoly(&poly[2], 100.0f, 100.0f, 100.0f);
     rotatePoly(&poly[2], 0.0f, 3.14f/4.0f, 0.0f);
     transformPoly(&poly[2], -200.0f, 0.0f, 300.0f);
-    projectPoly(&poly[2], 800.0f);
+    projectPoly(&poly[2]);
     scalePoly(&poly[3], 100.0f, 100.0f, 100.0f);
     rotatePoly(&poly[3], 0.0f, 3.14f/4.0f, 0.0f);
     transformPoly(&poly[3], 200.0f, 0.0f, 300.0f);
-    projectPoly(&poly[3], 800.0f);
+    projectPoly(&poly[3]);
 
     scalePoly(&poly[4], 100.0f, 100.0f, 100.0f);
     rotatePoly(&poly[4], 0.0f, 3.14f/4.0f, 0.0f);
     transformPoly(&poly[4], -200.0f, 0.0f, 900.0f);
-    projectPoly(&poly[4], 800.0f);
+    projectPoly(&poly[4]);
     scalePoly(&poly[5], 100.0f, 100.0f, 100.0f);
     rotatePoly(&poly[5], 0.0f, 3.14f/4.0f, 0.0f);
     transformPoly(&poly[5], 200.0f, 0.0f, 900.0f);
-    projectPoly(&poly[5], 800.0f);
+    projectPoly(&poly[5]);
 
     /*drawPoly(renderer, &poly[5]);
     drawPoly(renderer, &poly[4]);
@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
 
                 for (int i = 0; i < 6; i++) {
                     rotatePoly(&poly[i], 0.0f, 3.14f/100.0f, 0.0f);
-                    projectPoly(&poly[i], 800.0f);
+                    projectPoly(&poly[i]);
                 }
 
                 drawPoly(bufRenderer, &poly[5]);
