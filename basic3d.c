@@ -42,9 +42,9 @@ void transformPoly(Poly *poly, float dx, float dy, float dz)
 void scalePoly(Poly *poly, float mx, float my, float mz)
 {
     for (Ver3f *v = poly->vertices; v < poly->vertices + poly->vertexCount; v++) {
-        v->x *= mx;
-        v->y *= my;
-        v->z *= mz;
+        v->x = (v->x - poly->dx) * mx + poly->dx;
+        v->y = (v->y - poly->dy) * my + poly->dy;
+        v->z = (v->z - poly->dz) * mz + poly->dz;
     }
 }
 
