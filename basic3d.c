@@ -71,7 +71,7 @@ void projectPoly(Poly *poly)
 
 void drawLine(SDL_Renderer *renderer, Ver3f *i, Ver3f *j)
 {
-    aalineRGBA(renderer, i->px, i->py, j->px, j->py, 255, 255, 255, 255);
+    lineRGBA(renderer, i->px, i->py, j->px, j->py, 255, 255, 255, 255);
 }
 
 void drawPoly(SDL_Renderer *renderer, Poly *poly)

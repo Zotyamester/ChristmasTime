@@ -41,13 +41,14 @@ int main(int argc, char *argv[]) {
 
     // TESTING
 
-    Poly poly[6];
+    Poly poly[7];
     loadPoly(&poly[0], "tree.txt");
     loadPoly(&poly[1], "tree.txt");
     loadPoly(&poly[2], "tree.txt");
     loadPoly(&poly[3], "tree.txt");
     loadPoly(&poly[4], "tree.txt");
     loadPoly(&poly[5], "tree.txt");
+    loadPoly(&poly[6], "present.txt");
 
     scalePoly(&poly[0], 100.0f, 100.0f, 100.0f);
     rotatePoly(&poly[0], 0.0f, 3.14f/4.0f, 0.0f);
@@ -76,6 +77,11 @@ int main(int argc, char *argv[]) {
     transformPoly(&poly[5], 200.0f, 0.0f, 900.0f);
     projectPoly(&poly[5]);
 
+    scalePoly(&poly[6], 0.25f, 0.25f, 0.25f);
+    rotatePoly(&poly[6], 0.0f, 3.14f/2.0f, 0.0f);
+    transformPoly(&poly[6], 0.0f, 0.0f, -400.0f);
+    projectPoly(&poly[6]);
+
     bool quit = false;
     while (!quit) {
         SDL_Event event;
@@ -86,7 +92,7 @@ int main(int argc, char *argv[]) {
                 SDL_SetRenderDrawColor(bufRenderer, 0, 0, 0, 255);
                 SDL_RenderClear(bufRenderer);
 
-                for (int i = 0; i < 6; i++) {
+                for (int i = 0; i < 7; i++) {
                     rotatePoly(&poly[i], 0.0f, 3.14f/100.0f, 0.0f);
                     projectPoly(&poly[i]);
                 }
@@ -98,6 +104,7 @@ int main(int argc, char *argv[]) {
 
                 drawPoly(bufRenderer, &poly[3]);
                 drawPoly(bufRenderer, &poly[2]);
+                drawPoly(bufRenderer, &poly[6]);
                 /*SDL_RenderPresent(bufRenderer);
                 blurScreen(buffer, bufRenderer);*/
 
