@@ -76,23 +76,6 @@ int main(int argc, char *argv[]) {
     transformPoly(&poly[5], 200.0f, 0.0f, 900.0f);
     projectPoly(&poly[5]);
 
-    /*drawPoly(renderer, &poly[5]);
-    drawPoly(renderer, &poly[4]);
-    SDL_RenderPresent(renderer);
-    blurScreen(window, renderer);
-
-    drawPoly(renderer, &poly[3]);
-    drawPoly(renderer, &poly[2]);
-    SDL_RenderPresent(renderer);
-    blurScreen(window, renderer);
-
-    drawPoly(renderer, &poly[1]);
-    drawPoly(renderer, &poly[0]);
-
-    SDL_RenderPresent(renderer);*/
-    //zOrder(2, poly);
-    //drawPolys(renderer, 2, poly);
-
     bool quit = false;
     while (!quit) {
         SDL_Event event;
